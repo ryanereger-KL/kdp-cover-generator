@@ -1,4 +1,5 @@
 import io
+from pathlib import Path
 
 import img2pdf
 import streamlit as st
@@ -9,6 +10,10 @@ DPI = 300
 BLEED_IN = 0.125
 WHITE_PPI = 0.002252
 CREAM_PPI = 0.0025
+
+LOGO_PATH = Path(__file__).parent / "assets" / "logo.png"
+BRAND_NAME = "Kingdom Ink"
+BRAND_TAGLINE = "Print-ready KDP wraparound covers, in minutes."
 
 
 def in_to_px(inches: float) -> int:
@@ -146,13 +151,51 @@ def canvas_to_pdf(canvas: Image.Image, w_in: float, h_in: float) -> bytes:
     return img2pdf.convert(buf.getvalue(), layout_fun=layout)
 
 
-def main() -> None:
-    st.set_page_config(page_title="KDP Cover Generator", layout="wide")
-    st.title("KDP Wraparound Cover Generator")
-    st.caption(
-        "Composite a print-ready wraparound paperback cover at 300 DPI for "
-        "Amazon KDP."
+def render_brand() -> None:
+    logo_exists = LOGO_PATH.exists()
+
+    if logo_exists and hasattr(st, "logo"):
+        try:
+            st.logo(str(LOGO_PATH), size="large")
+        except Exception:
+            pass
+
+    if logo_exists:
+        st.image(str(LOGO_PATH), width=420)
+        st.sidebar.image(str(LOGO_PATH))
+    else:
+        st.markdown(
+            f"<h1 style='margin:0;font-style:italic;font-weight:500;"
+            f"color:#111;'>{BRAND_NAME}</h1>",
+            unsafe_allow_html=True,
+        )
+        st.sidebar.markdown(
+            f"<h3 style='margin:0 0 8px 0;font-style:italic;color:#111;'>"
+            f"{BRAND_NAME}</h3>",
+            unsafe_allow_html=True,
+        )
+        st.warning(
+            f"Logo not found. Expected at: `{LOGO_PATH}`. "
+            "Confirm the file exists and restart Streamlit."
+        )
+
+    st.markdown(
+        f"<p style='margin:8px 0 0 0;color:#555;font-style:italic;"
+        f"font-size:1.05rem;'>{BRAND_TAGLINE}</p>",
+        unsafe_allow_html=True,
     )
+    st.divider()
+
+
+def main() -> None:
+    page_icon = str(LOGO_PATH) if LOGO_PATH.exists() else "📖"
+    st.set_page_config(
+        page_title=f"{BRAND_NAME} — KDP Cover Studio",
+        page_icon=page_icon,
+        layout="wide",
+    )
+
+    render_brand()
 
     with st.sidebar:
         st.header("Cover files")
@@ -269,12 +312,19 @@ def main() -> None:
             st.download_button(
                 "Download PDF",
                 data=pdf_bytes,
-                file_name="kdp-cover.pdf",
+                file_name="kingdom-ink-cover.pdf",
                 mime="application/pdf",
                 type="primary",
             )
         except Exception as exc:
             st.exception(exc)
+
+    st.divider()
+    st.markdown(
+        f"<p style='text-align:center;color:#888;font-size:0.85rem;"
+        f"margin-top:1rem;'>{BRAND_NAME} &middot; KDP Cover Studio</p>",
+        unsafe_allow_html=True,
+    )
 
 
 if __name__ == "__main__":

@@ -1,6 +1,10 @@
-# KDP Wraparound Cover Generator
+# Kingdom Ink — KDP Cover Studio
 
-A small Streamlit app that builds print-ready Amazon KDP paperback wraparound covers at 300 DPI from a separate front and back cover file. It calculates the spine width from your page count and paper type, composites the back / spine / front onto a single bleed-sized canvas, and exports a flattened PDF ready for upload.
+A Streamlit app from **Kingdom Ink** that builds print-ready Amazon KDP paperback wraparound covers at 300 DPI from a separate front and back cover file. It calculates the spine width from your page count and paper type, composites the back / spine / front onto a single bleed-sized canvas, and exports a flattened PDF ready for upload.
+
+## Branding assets
+
+Drop the Kingdom Ink logo at `assets/logo.png` (transparent PNG recommended). The app falls back to a text wordmark if the file is missing. Theme colors live in `.streamlit/config.toml` — adjust there if you need to tweak the palette.
 
 ## Features
 
@@ -77,9 +81,13 @@ The app opens in your browser at <http://localhost:8501>.
 
 ```
 kdp-cover-generator/
-  app.py             Streamlit UI + cover compositing
-  requirements.txt   Pinned Python dependencies
-  README.md          This file
+  app.py                      Streamlit UI + cover compositing
+  requirements.txt            Python dependencies
+  README.md                   This file
+  assets/
+    logo.png                  Kingdom Ink wordmark (you provide)
+  .streamlit/
+    config.toml               Theme + Streamlit settings
 ```
 
 ## Troubleshooting
