@@ -152,39 +152,17 @@ def canvas_to_pdf(canvas: Image.Image, w_in: float, h_in: float) -> bytes:
 
 
 def render_brand() -> None:
-    logo_exists = LOGO_PATH.exists()
-
-    if logo_exists and hasattr(st, "logo"):
+    if LOGO_PATH.exists() and hasattr(st, "logo"):
         try:
             st.logo(str(LOGO_PATH), size="large")
         except Exception:
             pass
 
-    if logo_exists:
-        st.image(str(LOGO_PATH), width=420)
-        st.sidebar.image(str(LOGO_PATH))
-    else:
-        st.markdown(
-            f"<h1 style='margin:0;font-style:italic;font-weight:500;"
-            f"color:#111;'>{BRAND_NAME}</h1>",
-            unsafe_allow_html=True,
-        )
-        st.sidebar.markdown(
-            f"<h3 style='margin:0 0 8px 0;font-style:italic;color:#111;'>"
-            f"{BRAND_NAME}</h3>",
-            unsafe_allow_html=True,
-        )
-        st.warning(
-            f"Logo not found. Expected at: `{LOGO_PATH}`. "
-            "Confirm the file exists and restart Streamlit."
-        )
-
-    st.markdown(
-        f"<p style='margin:8px 0 0 0;color:#555;font-style:italic;"
-        f"font-size:1.05rem;'>{BRAND_TAGLINE}</p>",
-        unsafe_allow_html=True,
+    st.title("KDP Wraparound Cover Generator")
+    st.caption(
+        "Composite a print-ready wraparound paperback cover at 300 DPI for "
+        "Amazon KDP."
     )
-    st.divider()
 
 
 def main() -> None:
